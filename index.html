@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo - Biossegurança</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .quiz-container { max-width: 600px; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0px 0px 10px gray; }
+        .question { font-size: 18px; margin-bottom: 10px; }
+        .options button { display: block; width: 100%; margin: 5px 0; padding: 10px; border: none; border-radius: 5px; cursor: pointer; background-color: #007BFF; color: white; }
+        .options button:hover { background-color: #0056b3; }
+        .result { font-weight: bold; margin-top: 15px; }
+        .back-button { margin-top: 20px; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .back-button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2>Quiz de Biossegurança e Prevenção de Acidentes</h2>
+        <p class="question">Carregando pergunta...</p>
+        <div class="options"></div>
+        <p class="result"></p>
+        <button class="back-button" onclick="prevQuestion()">⬅ Voltar</button>
+    </div>
+    <script>
+        const questions = [
+            { question: "Qual é o principal objetivo da biossegurança?", options: ["A) Proteger apenas os pacientes", "B) Reduzir riscos no ambiente de saúde", "C) Eliminar totalmente os riscos", "D) Somente evitar riscos químicos"], correct: 1 },
+            { question: "Sobre a NR-32, assinale a alternativa correta:", options: ["A) Ela regulamenta EPIs e medidas de proteção em saúde", "B) Só se aplica a hospitais públicos", "C) Determina regras apenas para médicos", "D) Não tem relação com riscos biológicos"], correct: 0 },
+            { question: "Qual a atitude correta após um acidente com material biológico?", options: ["A) Apertar o ferimento para sair o sangue", "B) Lavar a área com água e sabão e comunicar o setor responsável", "C) Desinfetar com álcool e continuar trabalhando", "D) Apenas registrar o ocorrido e seguir normalmente"], correct: 1 },
+            { question: "Qual é um exemplo de EPI utilizado em biossegurança?", options: ["A) Máscara N95", "B) Jaleco de algodão", "C) Avental descartável", "D) Todas as alternativas anteriores"], correct: 3 },
+            { question: "O que fazer em caso de derramamento de material biológico?", options: ["A) Lavar com água e sabão apenas", "B) Usar solução desinfetante adequada", "C) Ignorar se for pequena quantidade", "D) Esperar o supervisor limpar"], correct: 1 },
+            { question: "Qual sinal indica risco biológico?", options: ["A) Triângulo amarelo com caveira", "B) Círculo vermelho com cruz", "C) Símbolo preto em fundo amarelo", "D) Sinal de radiação"], correct: 2 },
+            { question: "Quais são os tipos de risco em biossegurança?", options: ["A) Biológico, químico, físico, ergonômico e de acidente", "B) Apenas biológico e químico", "C) Somente físico e químico", "D) Nenhuma das alternativas"], correct: 0 },
+            { question: "O que são resíduos perfurocortantes?", options: ["A) Resíduos que podem cortar ou perfurar a pele", "B) Qualquer tipo de lixo hospitalar", "C) Somente seringas usadas", "D) Nenhuma das anteriores"], correct: 0 },
+            { question: "Qual a cor do saco para descarte de resíduos infectantes?", options: ["A) Azul", "B) Branco", "C) Vermelho", "D) Preto"], correct: 2 },
+            { question: "Por que o treinamento em biossegurança é importante?", options: ["A) Para evitar acidentes", "B) Para conhecer normas e regulamentos", "C) Para aumentar a segurança dos trabalhadores", "D) Todas as alternativas anteriores"], correct: 3 }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const questionElement = document.querySelector(".question");
+            const optionsContainer = document.querySelector(".options");
+            const resultElement = document.querySelector(".result");
+            
+            questionElement.textContent = questions[currentQuestion].question;
+            optionsContainer.innerHTML = "";
+            resultElement.textContent = "";
+
+            questions[currentQuestion].options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            const resultElement = document.querySelector(".result");
+            if (selectedIndex === questions[currentQuestion].correct) {
+                resultElement.textContent = "✅ Resposta correta!";
+                resultElement.style.color = "green";
+            } else {
+                resultElement.textContent = "❌ Resposta incorreta. Tente novamente!";
+                resultElement.style.color = "red";
+            }
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    loadQuestion();
+                } else {
+                    document.querySelector(".quiz-container").innerHTML = "<h2>Parabéns! Você concluiu o quiz!</h2>";
+                }
+            }, 1500);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
